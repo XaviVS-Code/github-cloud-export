@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GitHub Cloud Export</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body data-theme="auto">
+  <div class="header">
+    <img src="../../assets/icon48.png" alt="Cloud Export Icon" width="48" height="48">
+    <h1>GitHub Cloud Export</h1>
+  </div>
+
+  <!-- Target + Format -->
+  <label class="field">
+    <span class="label">Export to</span>
+    <select id="target">
+      <option value="drive">Google Drive</option>
+      <option value="dropbox">Dropbox</option>
+      <option value="onedrive">OneDrive</option>
+    </select>
+  </label>
+
+  <label class="field">
+    <span class="label">Export format</span>
+    <select id="formatToggle">
+      <option value="zip">ZIP (.zip)</option>
+      <option value="tar">TAR.GZ (.tar.gz)</option>
+    </select>
+  </label>
+
+  <button id="export">Export current repo</button>
+
+  <!-- Toggles -->
+  <label class="debug">
+    <input type="checkbox" id="debugToggle">
+    Enable debug mode
+  </label>
+
+  <label class="debug">
+    <input type="checkbox" id="testModeToggle">
+    Simulate export (dry run)
+  </label>
+
+  <!-- Spinner -->
+  <div id="spinner" class="spinner-container" style="display:none;">
+    <div class="loader"></div>
+    <span id="spinnerText">Working...</span>
+  </div>
+
+  <div id="status"></div>
+
+  <!-- Nav actions -->
+  <div class="actions">
+    <button id="showHistory">View history</button>
+    <button id="showStarred">Starred repos</button>
+    <button id="showSettings">Settings</button>
+  </div>
+
+  <!-- History panel + filters + screenshot -->
+  <div id="historyPanel" class="panel" style="display:none;">
+    <h2>Export history</h2>
+
+    <div class="filters">
+      <select id="historyProvider">
+        <option value="">All providers</option>
+        <option value="drive">Google Drive</option>
+        <option value="dropbox">Dropbox</option>
+        <option value="onedrive">OneDrive</option>
+      </select>
+      <input id="historySearch" placeholder="Filter by owner/repo" />
+      <button id="applyFilters">Apply</button>
+      <button id="clearFilters">Clear</button>
+      <button id="saveSummary">Save summary screenshot</button>
+    </div>
+
+    <ul id="historyList"></ul>
+    <button id="clearHistory">Clear history</button>
+  </div>
+
+  <!-- Starred with batch + retry -->
+  <div id="starredPanel" class="panel" style="display:none;">
+    <h2>Starred repos</h2>
+    <div class="starred-controls">
+      <input id="ghUsername" placeholder="GitHub username (public)" />
+      <button id="loadStarred">Load</button>
+      <button id="selectAllStarred">Select all</button>
+      <button id="exportSelectedStarred">Export selected</button>
+    </div>
+    <ul id="starredList" class="starred-list"></ul>
+  </div>
+
+  <!-- Settings -->
+  <div id="settingsPanel" class="panel" style="display:none;">
+    <h2>Settings</h2>
+
+    <label class="field">
+      <span class="label">Default cloud target</span>
+      <select id="defaultTarget">
+        <option value="drive">Google Drive</option>
+        <option value="dropbox">Dropbox</option>
+        <option value="onedrive">OneDrive</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span class="label">Theme</span>
+      <select id="themeSelect">
+        <option value="auto">Auto (match system)</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span class="label">Default format</span>
+      <select id="defaultFormat">
+        <option value="zip">ZIP</option>
+        <option value="tar">TAR.GZ</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span class="label">History retention (max entries)</span>
+      <input id="historyMax" type="number" min="10" max="5000" step="10" placeholder="e.g. 200">
+    </label>
+
+    <label>
+      <input type="checkbox" id="defaultDebug"> Enable debug by default
+    </label>
+    <label>
+      <input type="checkbox" id="defaultTestMode"> Enable test mode by default
+    </label>
+    <button id="saveSettings">Save settings</button>
+  </div>
+
+  <!-- html2canvas for screenshot summary -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

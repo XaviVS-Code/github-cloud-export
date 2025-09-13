@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "GitHub Cloud Export",
+  "version": "2.0.0",
+  "description": "Export GitHub repos to Google Drive, Dropbox, or OneDrive. Batch exports, history, and more.",
+  "permissions": ["identity", "storage", "scripting", "activeTab", "tabs"],
+  "host_permissions": [
+    "https://github.com/*",
+    "https://api.github.com/*",
+    "https://raw.githubusercontent.com/*",
+    "https://www.googleapis.com/*",
+    "https://content.dropboxapi.com/*",
+    "https://graph.microsoft.com/*"
+  ],
+  "oauth2": {
+    "client_id": "998130022562-tsnj9hj27bk9n2ccpd5qvf9jjouic0is.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/drive.file"]
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  }
+}

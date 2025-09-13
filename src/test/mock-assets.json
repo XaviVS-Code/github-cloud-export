@@ -1,0 +1,4 @@
+[
+  { "name": "release-v1.0.zip", "url": "https://example.com/release-v1.0.zip" },
+  { "name": "changelog.md", "url": "https://example.com/changelog.md" }
+]

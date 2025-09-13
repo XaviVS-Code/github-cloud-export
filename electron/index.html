@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GitHub Cloud Export — Desktop</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 16px; }
+    .row { display:flex; gap:8px; margin-bottom:8px; }
+    input, button, select { padding: 6px 8px; }
+    #status { font-size: 12px; color: #333; min-height: 16px; margin-top:8px; }
+    #dropzone { border: 2px dashed #bbb; padding: 20px; text-align: center; color: #666; border-radius: 8px; margin-top: 12px; }
+    #dropzone.drag { border-color: #333; color: #222; background: #fafafa; }
+  </style>
+</head>
+<body>
+  <h1>GitHub Cloud Export — Desktop</h1>
+  <div class="row">
+    <input id="owner" placeholder="owner (e.g. octocat)">
+    <input id="repo" placeholder="repo (e.g. Hello-World)">
+    <select id="format">
+      <option value="zip">ZIP</option>
+      <option value="tar">TAR.GZ</option>
+    </select>
+  </div>
+  <div class="row">
+    <button id="download">Download archive locally</button>
+  </div>
+
+  <div id="dropzone">Drag & drop a GitHub repo URL here (e.g. https://github.com/owner/repo)</div>
+  <div id="status"></div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const owner = document.getElementById('owner');
+      const repo = document.getElementById('repo');
+      const format = document.getElementById('format');
+      const btn = document.getElementById('download');
+      const status = document.getElementById('status');
+      const dz = document.getElementById('dropzone');
+
+      btn.addEventListener('click', async () => {
+        status.textContent = 'Fetching archive...';
+        try {
+          const result = await window.api.downloadZip({ owner: owner.value.trim(), repo: repo.value.trim(), format: format.value });
+          status.textContent = result.saved ? `Saved: ${result.path}` : 'Canceled';
+        } catch (e) {
+          status.textContent = `Error: ${e.message}`;
+        }
+      });
+
+      function parseGitHubUrl(text) {
+        try {
+          const u = new URL(text.trim());
+          if (u.hostname !== 'github.com') return null;
+          const parts = u.pathname.split('/').filter(Boolean);
+          if (parts.length < 2) return null;
+          return { owner: parts[0], repo: parts[1] };
+        } catch { return null; }
+      }
+
+      ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => {
+        e.preventDefault(); e.stopPropagation();
+        dz.classList.add('drag');
+      }));
+      ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => {
+        e.preventDefault(); e.stopPropagation();
+        dz.classList.remove('drag');
+      }));
+      dz.addEventListener('drop', async (e) => {
+        const data = e.dataTransfer.getData('text/plain') || '';
+        const parsed = parseGitHubUrl(data);
+        if (!parsed) { status.textContent = 'Drop a valid GitHub repo URL.'; return; }
+        owner.value = parsed.owner;
+        repo.value = parsed.repo;
+        status.textContent = 'Fetching archive...';
+        try {
+          const result = await window.api.downloadZip({ ...parsed, format: format.value });
+          status.textContent = result.saved ? `Saved: ${result.path}` : 'Canceled';
+        } catch (err) {
+          status.textContent = `Error: ${err.message}`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

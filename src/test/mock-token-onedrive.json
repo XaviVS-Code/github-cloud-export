@@ -1,0 +1,5 @@
+{
+  "access_token": "onedrive.mocked.token",
+  "refresh_token": "mocked.refresh",
+  "expires_at": 9999999999999
+}
