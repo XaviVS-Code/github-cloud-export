@@ -8,7 +8,7 @@
     "start": "electron ./electron.js"
   },
   "dependencies": {
-    "electron": "^31.0.0",
+    "electron": "^38.1.0",
     "node-fetch": "^3.3.2"
   }
 }
