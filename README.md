@@ -141,3 +141,4 @@ Please follow the modular structure and keep UI logic separate from background l
 ## 📜 License
 
 This project is licensed under the MIT License. See [`LICENSE`](./LICENSE) for full terms.
+...
