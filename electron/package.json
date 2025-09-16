@@ -1,0 +1,14 @@
+{
+  "name": "github-cloud-export-desktop",
+  "version": "0.2.0",
+  "main": "electron.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "electron ./electron.js"
+  },
+  "dependencies": {
+    "electron": "^31.0.0",
+    "node-fetch": "^3.3.2"
+  }
+}

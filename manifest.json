@@ -1,0 +1,52 @@
+{
+  "name": "GitHub Cloud Export",
+  "description": "Export GitHub repositories to Google Drive, Dropbox, or OneDrive.",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "identity",
+    "downloads",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://github.com/*",
+    "https://api.github.com/*",
+    "https://www.googleapis.com/*",
+    "https://content.dropboxapi.com/*",
+    "https://api.dropboxapi.com/*",
+    "https://graph.microsoft.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/icon16.png",
+        "assets/icon48.png",
+        "assets/icon128.png",
+        "assets/icon16-dark.png",
+        "assets/icon48-dark.png",
+        "assets/icon128-dark.png"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
